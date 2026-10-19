@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>FormulaPath</title>
+<style>
+:root{--bg:#f3f6fb;--card:#fff;--ink:#14213d;--mute:#5b6784;--line:#d5dcea;--accent:#1d4ed8;--ok:#15803d;--okbg:#dcfce7;--bad:#b91c1c;--badbg:#fee2e2;--onacc:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1729;--card:#1a2540;--ink:#eef2ff;--mute:#9aa7c7;--line:#2e3b5e;--accent:#7aa2ff;--ok:#4ade80;--okbg:#12361f;--bad:#f87171;--badbg:#401818;--onacc:#0f1729}}
+:root[data-theme="dark"]{--bg:#0f1729;--card:#1a2540;--ink:#eef2ff;--mute:#9aa7c7;--line:#2e3b5e;--accent:#7aa2ff;--ok:#4ade80;--okbg:#12361f;--bad:#f87171;--badbg:#401818;--onacc:#0f1729}
+*{box-sizing:border-box}
+html{color-scheme:light dark;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Georgia,"Times New Roman",serif;min-height:100vh}
+.app{max-width:560px;margin:0 auto;padding:16px}
+.top{display:flex;justify-content:space-between;align-items:center;font:600 15px system-ui,sans-serif;color:var(--mute);margin-bottom:12px}
+.top b{color:var(--ink)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-bottom:16px}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.q{font:600 16px system-ui,sans-serif;color:var(--mute);margin:0 0 10px}
+.f{font-size:28px;line-height:1.35;overflow-wrap:anywhere;margin:0 0 18px}
+.opts{display:grid;gap:10px}
+.opt{font:500 17px system-ui,sans-serif;text-align:left;padding:14px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer;overflow-wrap:anywhere}
+.opt:focus-visible,.next:focus-visible,.lg:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opt.ok{background:var(--okbg);border-color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad)}
+.opt:disabled{cursor:default}
+.info{margin-top:14px;padding:12px 14px;border-left:4px solid var(--accent);font:15px/1.5 system-ui,sans-serif;display:none;overflow-wrap:anywhere}
+.next{margin-top:14px;width:100%;padding:14px;font:600 17px system-ui,sans-serif;border:0;border-radius:10px;background:var(--accent);color:var(--onacc);cursor:pointer}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:12px}.ch{padding:10px 14px;font:600 15px system-ui,sans-serif;border:1.5px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink);cursor:pointer}.ch.on{background:var(--accent);border-color:var(--accent);color:var(--onacc)}.ch:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.mu{flex:0 0 54px!important}
+.langs{display:flex;gap:8px;margin-bottom:14px}
+.lg{flex:1;padding:10px 4px;font:600 15px system-ui,sans-serif;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);cursor:pointer}
+.lg.on{border-color:var(--accent);background:var(--accent);color:var(--onacc)}
+input{width:100%;padding:14px;font:17px system-ui,sans-serif;border:1.5px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+h1{font-size:30px;margin:6px 0 14px}
+.foot{max-width:560px;margin:0 auto;padding:8px 16px 24px;text-align:center;font:13px/1.5 system-ui,sans-serif;color:var(--mute)}
+.big{font-size:56px;margin:8px 0}
+.c{text-align:center}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+<p class="foot">© 2026 Giorgi Alakulashvili<br>@Giorgi_Alakulashvili</p>
+<script>
+var C=["tr","en","ka"],LN=["Türkçe","English","ქართული"],L=0,name="",lv=0,S;
+var T={
+tr:{title:"FormulaPath",ask:"Adın ne?",ph:"Adın",go:"Başla",hi:"Merhaba, {n}!",lv:"Zorluk seç",lvs:["Kolay","Orta","Zor"],qc:"Formülü tamamla",qu:"Bu formül ne işe yarar?",qn:"Bu formülün adı nedir?",qw:"Bu formül kime ait / kime atfedilir?",q:"Soru",p:"Puan",life:"Can",nx:"Sonraki soru",fin:"Sonucu gör",again:"Tekrar oyna",menu:"Menü",best:"En yüksek puan",rec:"Yeni rekor!",done:"Tur bitti, {n}!",over:"Canların bitti, {n}",ok:"Doğru, {n}!",no:"Yanlış, {n}.",who:"Atfedilen: ",sub:"Konu",subs:["Matematik","Fizik"],tst:"Test",tsts:["Test 1","Test 2"],md:"Mod",mds:["Tur","Sonsuz","60 sn"],lvl:"Zorluk",ranks:["Çırak","Öğrenci","Araştırmacı","Uzman","Usta","Bilge"],q2:"Hangi formül doğru?",up:"Yeni rütbe: "},
+en:{title:"FormulaPath",ask:"What’s your name?",ph:"Your name",go:"Start",hi:"Hi, {n}!",lv:"Choose a level",lvs:["Easy","Medium","Hard"],qc:"Complete the formula",qu:"What is this formula used for?",qn:"What is this formula called?",qw:"Who is this formula credited to?",q:"Question",p:"Score",life:"Lives",nx:"Next question",fin:"See result",again:"Play again",menu:"Menu",best:"Best score",rec:"New record!",done:"Round complete, {n}!",over:"Out of lives, {n}",ok:"Correct, {n}!",no:"Not quite, {n}.",who:"Credited to: ",sub:"Subject",subs:["Math","Physics"],tst:"Test",tsts:["Test 1","Test 2"],md:"Mode",mds:["Round","Endless","60 sec"],lvl:"Level",ranks:["Apprentice","Student","Researcher","Expert","Master","Sage"],q2:"Which formula is correct?",up:"New rank: "},
+ka:{title:"FormulaPath",ask:"რა გქვია?",ph:"შენი სახელი",go:"დაწყება",hi:"გამარჯობა, {n}!",lv:"აირჩიე სირთულე",lvs:["მარტივი","საშუალო","რთული"],qc:"დაასრულე ფორმულა",qu:"რისთვის გამოიყენება ეს ფორმულა?",qn:"რა ჰქვია ამ ფორმულას?",qw:"ვის მიეკუთვნება ეს ფორმულა?",q:"კითხვა",p:"ქულა",life:"სიცოცხლე",nx:"შემდეგი კითხვა",fin:"შედეგის ნახვა",again:"თავიდან თამაში",menu:"მენიუ",best:"საუკეთესო შედეგი",rec:"ახალი რეკორდი!",done:"რაუნდი დასრულდა, {n}!",over:"სიცოცხლეები დასრულდა, {n}",ok:"სწორია, {n}!",no:"არასწორია, {n}.",who:"მიეკუთვნება: ",sub:"საგანი",subs:["მათემატიკა","ფიზიკა"],tst:"ტესტი",tsts:["ტესტი 1","ტესტი 2"],md:"რეჟიმი",mds:["რაუნდი","უსასრულო","60 წმ"],lvl:"სირთულე",ranks:["შეგირდი","სტუდენტი","მკვლევარი","ექსპერტი","ოსტატი","ბრძენი"],q2:"რომელია სწორი ფორმულა?",up:"ახალი რანგი: "}
+};
+var NM=[["Pisagor","Pythagoras","პითაგორა"],["Arşimet","Archimedes","არქიმედე"],["Gauss","Gauss","გაუსი"],["Heron","Heron","ჰერონი"],["Euler","Euler","ეილერი"],["Newton ve Leibniz","Newton and Leibniz","ნიუტონი და ლაიბნიცი"],["Öklid","Euclid","ევკლიდე"],["Fibonacci","Fibonacci","ფიბონაჩი"],["Pascal","Pascal","პასკალი"],["Descartes","Descartes","დეკარტი"],["Newton","Newton","ნიუტონი"],["Einstein","Einstein","ეინშტაინი"],["Ohm","Ohm","ომი"],["Hooke","Hooke","ჰუკი"],["Coulomb","Coulomb","კულონი"]];
+// [seviye, sol, sağ, yanlışlar, kişi(-1 yok), ad[tr,en,ka], işlev[tr,en,ka]]
+var D=[
+[0,"a² + b² =","c²",["c","2ab","(a+b)²"],0,["Pisagor teoremi","Pythagorean theorem","პითაგორას თეორემა"],["Dik üçgende kenarlar arasındaki ilişkiyi verir","Relates the sides of a right triangle","მართკუთხა სამკუთხედის გვერდებს აკავშირებს"]],
+[0,"A =","πr²",["2πr","πd²","πr³"],-1,["Dairenin alanı","Area of a circle","წრის ფართობი"],["Yarıçaptan dairenin alanını bulur","Finds a circle’s area from its radius","რადიუსით პოულობს წრის ფართობს"]],
+[0,"(a + b)² =","a² + 2ab + b²",["a² + b²","a² + ab + b²","a² + 2ab − b²"],-1,["Toplamın karesi","Square of a sum","ჯამის კვადრატი"],["İki terimin toplamının karesini açar","Expands the square of a sum","ხსნის ჯამის კვადრატს"]],
+[0,"sin²x + cos²x =","1",["0","2","tan²x"],-1,["Temel trigonometrik özdeşlik","Basic trig identity","ძირითადი ტრიგონომეტრიული იგივეობა"],["Sinüs ve kosinüs arasındaki temel bağıntı","The basic link between sine and cosine","სინუსსა და კოსინუსს შორის ძირითადი კავშირი"]],
+[0,"C =","2πr",["πr²","2πr²","πr"],-1,["Çemberin çevresi","Circumference of a circle","წრეწირის სიგრძე"],["Yarıçaptan çember uzunluğunu bulur","Finds circumference from the radius","რადიუსით პოულობს წრეწირის სიგრძეს"]],
+[0,"A =","½·a·h",["a·h","½·a + h","2·a·h"],-1,["Üçgenin alanı","Area of a triangle","სამკუთხედის ფართობი"],["Taban ve yükseklikten alan bulur","Finds area from base and height","ფუძითა და სიმაღლით პოულობს ფართობს"]],
+[0,"(a − b)(a + b) =","a² − b²",["a² + b²","a² − 2ab + b²","(a − b)²"],-1,["İki kare farkı","Difference of squares","კვადრატების სხვაობა"],["İki karenin farkını çarpanlara ayırır","Factors a difference of two squares","შლის კვადრატების სხვაობას მამრავლებად"]],
+[0,"V =","πr²h",["2πrh","πrh²","⅓πr²h"],-1,["Silindirin hacmi","Volume of a cylinder","ცილინდრის მოცულობა"],["Taban alanını yükseklikle çarpar","Multiplies base area by height","ფუძის ფართობს ამრავლებს სიმაღლეზე"]],
+[1,"Δ =","b² − 4ac",["b² + 4ac","4ac − b","b − 4ac²"],-1,["Diskriminant","Discriminant","დისკრიმინანტი"],["Köklerin sayısını belirler","Tells how many roots there are","განსაზღვრავს ფესვების რაოდენობას"]],
+[1,"x₁,₂ =","(−b ± √Δ) / 2a",["(b ± √Δ) / 2a","(−b ± √Δ) / a","(−b ± Δ) / 2a"],-1,["İkinci derece denklemin kökleri","Quadratic formula","კვადრატული განტოლების ფესვები"],["ax² + bx + c = 0 denkleminin köklerini bulur","Solves ax² + bx + c = 0","ხსნის ax² + bx + c = 0 განტოლებას"]],
+[1,"V =","4/3 πr³",["4πr²","1/3 πr³","4/3 πr²"],1,["Kürenin hacmi","Volume of a sphere","სფეროს მოცულობა"],["Yarıçaptan kürenin hacmini bulur","Finds a sphere’s volume from its radius","რადიუსით პოულობს სფეროს მოცულობას"]],
+[1,"log(a·b) =","log a + log b",["log a · log b","log a − log b","log(a+b)"],-1,["Logaritmada çarpım kuralı","Product rule of logarithms","ლოგარითმის ნამრავლის წესი"],["Çarpımı toplama çevirir","Turns a product into a sum","ნამრავლს ჯამად აქცევს"]],
+[1,"a² =","b² + c² − 2bc·cosA",["b² + c² + 2bc·cosA","b² − c² − 2bc·cosA","b² + c² − 2bc·sinA"],-1,["Kosinüs teoremi","Law of cosines","კოსინუსების თეორემა"],["İki kenar ve aradaki açıdan üçüncü kenarı bulur","Finds a side from two sides and the angle between","ორი გვერდითა და კუთხით პოულობს მესამე გვერდს"]],
+[1,"a / sinA =","2R",["R","R / 2","R·sinB"],-1,["Sinüs teoremi","Law of sines","სინუსების თეორემა"],["Kenar ile karşısındaki açı arasındaki oranı verir","Links a side to its opposite angle","გვერდს აკავშირებს მის მოპირდაპირე კუთხესთან"]],
+[1,"Sₙ =","n(a₁ + aₙ) / 2",["n(a₁ · aₙ) / 2","(a₁ + aₙ) / n","n(a₁ + aₙ)"],2,["Aritmetik dizi toplamı","Sum of an arithmetic series","არითმეტიკული პროგრესიის ჯამი"],["Ardışık terimlerin toplamını hızlı bulur","Adds up the terms quickly","სწრაფად პოულობს წევრთა ჯამს"]],
+[1,"C(n, r) =","n! / (r!(n−r)!)",["n! / r!","n! / (n−r)!","n! · r!"],-1,["Kombinasyon","Combination","კომბინაცია"],["n elemandan r tane seçme sayısını verir","Counts ways to choose r of n items","ითვლის n-დან r ელემენტის არჩევის გზებს"]],
+[2,"A =","√(s(s−a)(s−b)(s−c))",["s(s−a)(s−b)(s−c)","√(s·a·b·c)","½·s·(a+b+c)"],3,["Heron formülü","Heron’s formula","ჰერონის ფორმულა"],["Üç kenardan üçgenin alanını bulur","Finds a triangle’s area from its sides","სამი გვერდით პოულობს სამკუთხედის ფართობს"]],
+[2,"e^(iπ) + 1 =","0",["1","−1","i"],4,["Euler özdeşliği","Euler’s identity","ეილერის იგივეობა"],["e, i, π, 1 ve 0 sabitlerini birleştirir","Links e, i, π, 1 and 0","აერთიანებს e, i, π, 1 და 0 კონსტანტებს"]],
+[2,"f′(x) =","lim(h→0) [f(x+h) − f(x)] / h",["lim(h→0) [f(x+h) + f(x)] / h","lim(h→0) [f(x+h) − f(x)] · h","lim(x→0) [f(x+h) − f(x)] / h"],5,["Türevin tanımı","Definition of the derivative","წარმოებულის განმარტება"],["Anlık değişim hızını verir","Gives the instantaneous rate of change","გვაძლევს მყისიერი ცვლილების სიჩქარეს"]],
+[2,"(xⁿ)′ =","n·xⁿ⁻¹",["xⁿ⁻¹","n·xⁿ","(n−1)·xⁿ⁻¹"],-1,["Kuvvet fonksiyonunun türevi","Power rule","ხარისხოვანი ფუნქციის წარმოებული"],["xⁿ fonksiyonunun türevini bulur","Differentiates xⁿ","პოულობს xⁿ-ის წარმოებულს"]],
+[2,"∫xⁿ dx =","xⁿ⁺¹ / (n+1) + C",["xⁿ⁻¹ / (n−1) + C","n·xⁿ⁻¹ + C","xⁿ⁺¹ + C"],-1,["Kuvvet fonksiyonunun integrali","Power rule for integrals","ხარისხოვანი ფუნქციის ინტეგრალი"],["xⁿ fonksiyonunun integralini bulur","Integrates xⁿ","პოულობს xⁿ-ის ინტეგრალს"]],
+[2,"Sₙ =","a₁(rⁿ − 1) / (r − 1)",["a₁(rⁿ + 1) / (r − 1)","a₁(rⁿ − 1) / (r + 1)","a₁·rⁿ / (r − 1)"],-1,["Geometrik dizi toplamı","Sum of a geometric series","გეომეტრიული პროგრესიის ჯამი"],["Oranı r olan dizinin terimlerini toplar","Adds up a geometric sequence","პოულობს გეომეტრიული პროგრესიის ჯამს"]],
+[2,"P(A∪B) =","P(A) + P(B) − P(A∩B)",["P(A) + P(B) + P(A∩B)","P(A) · P(B)","P(A) + P(B)"],-1,["Olasılıkta toplama kuralı","Addition rule of probability","ალბათობის შეკრების წესი"],["A veya B olayının olasılığını verir","Gives the probability of A or B","გვაძლევს A ან B მოვლენის ალბათობას"]],
+[2,"d =","√((x₂−x₁)² + (y₂−y₁)²)",["√((x₂+x₁)² + (y₂+y₁)²)","(x₂−x₁)² + (y₂−y₁)²","√(x₂−x₁) + √(y₂−y₁)"],-1,["İki nokta arası uzaklık","Distance between two points","მანძილი ორ წერტილს შორის"],["Koordinat düzleminde uzaklığı bulur","Measures distance on the coordinate plane","ზომავს მანძილს კოორდინატულ სიბრტყეზე"]]
+];
+var D2=[
+[0,"v =","s / t",["s·t","t / s","s + t"],-1,["Hız","Speed","სიჩქარე"],["Alınan yolu zamana böler","Divides distance by time","მანძილს ყოფს დროზე"]],
+[0,"F =","m·a",["m / a","m + a","m·a²"],10,["Newton’un ikinci yasası","Newton’s second law","ნიუტონის მეორე კანონი"],["Kuvvet, kütle ve ivmeyi ilişkilendirir","Links force, mass and acceleration","აკავშირებს ძალას, მასასა და აჩქარებას"]],
+[0,"ρ =","m / V",["m·V","V / m","m / V²"],-1,["Yoğunluk","Density","სიმკვრივე"],["Birim hacimdeki kütleyi verir","Mass per unit volume","მასა მოცულობის ერთეულზე"]],
+[0,"W =","m·g",["m / g","m·g²","g / m"],-1,["Ağırlık","Weight","წონა"],["Kütleye etki eden yerçekimi kuvveti","The pull of gravity on a mass","სიმძიმის ძალა მასაზე"]],
+[0,"P =","F / A",["F·A","A / F","F / A²"],-1,["Basınç","Pressure","წნევა"],["Kuvveti yüzeye böler","Force divided by area","ძალა გაყოფილი ფართობზე"]],
+[0,"U =","I·R",["I / R","R / I","I·R²"],12,["Ohm yasası","Ohm’s law","ომის კანონი"],["Gerilim, akım ve direnç ilişkisi","Links voltage, current and resistance","აკავშირებს ძაბვას, დენსა და წინაღობას"]],
+[1,"Ek =","½·m·v²",["m·v²","½·m·v","2·m·v²"],-1,["Kinetik enerji","Kinetic energy","კინეტიკური ენერგია"],["Hareket eden cismin enerjisi","Energy of a moving object","მოძრავი სხეულის ენერგია"]],
+[1,"Ep =","m·g·h",["m·g / h","m·h / g","g·h"],-1,["Potansiyel enerji","Potential energy","პოტენციური ენერგია"],["Yüksekteki cismin depoladığı enerji","Energy stored by height","სიმაღლის გამო დაგროვილი ენერგია"]],
+[1,"P =","W / t",["W·t","t / W","W / t²"],-1,["Güç","Power","სიმძლავრე"],["İşin zamana oranı","Work done per unit time","შესრულებული სამუშაო დროის ერთეულზე"]],
+[1,"F =","−k·x",["k·x²","−k / x","−x / k"],13,["Hooke yasası","Hooke’s law","ჰუკის კანონი"],["Yayın geri çağırıcı kuvveti","Restoring force of a spring","ზამბარის დამბრუნებელი ძალა"]],
+[1,"p =","m·v",["m / v","m·v²","v / m"],-1,["Momentum","Momentum","იმპულსი"],["Kütle ile hızın çarpımı","Mass times velocity","მასისა და სიჩქარის ნამრავლი"]],
+[1,"Q =","m·c·ΔT",["m·c / ΔT","m·ΔT","c·ΔT"],-1,["Isı miktarı","Heat energy","სითბოს რაოდენობა"],["Sıcaklığı değiştirmek için gereken ısı","Heat needed to change temperature","ტემპერატურის შესაცვლელი სითბო"]],
+[2,"E =","m·c²",["m·c","m·c³","½·m·c²"],11,["Kütle-enerji eşdeğerliği","Mass–energy equivalence","მასისა და ენერგიის ეკვივალენტობა"],["Kütlenin enerjiye karşılık geldiğini gösterir","Shows that mass equals energy","აჩვენებს, რომ მასა ენერგიას უტოლდება"]],
+[2,"F =","k·q₁·q₂ / r²",["k·q₁·q₂ / r","k·(q₁+q₂) / r²","k·q₁·q₂·r²"],14,["Coulomb yasası","Coulomb’s law","კულონის კანონი"],["İki yük arasındaki elektrik kuvveti","Electric force between two charges","ელექტრული ძალა ორ მუხტს შორის"]],
+[2,"F =","G·m₁·m₂ / r²",["G·m₁·m₂ / r","G·(m₁+m₂) / r²","G·m₁·m₂·r²"],10,["Evrensel kütle çekim yasası","Law of universal gravitation","საყოველთაო მიზიდულობის კანონი"],["İki kütle arasındaki çekim kuvveti","Gravity between two masses","მიზიდულობა ორ მასას შორის"]],
+[2,"T =","2π√(l / g)",["2π√(g / l)","2π·l / g","π√(l / g)"],-1,["Basit sarkaç periyodu","Period of a simple pendulum","მათემატიკური ქანქარის პერიოდი"],["Sarkacın bir salınım süresi","Time for one swing","ერთი რხევის დრო"]],
+[2,"λ =","v / f",["v·f","f / v","v / f²"],-1,["Dalga denklemi","Wave equation","ტალღის განტოლება"],["Dalga boyunu hız ve frekanstan bulur","Finds wavelength from speed and frequency","პოულობს ტალღის სიგრძეს სიჩქარითა და სიხშირით"]],
+[2,"P =","U·I",["U / I","U·I²","I / U"],-1,["Elektriksel güç","Electric power","ელექტრო სიმძლავრე"],["Gerilim ile akımın çarpımı","Voltage times current","ძაბვისა და დენის ნამრავლი"]]
+];
+var app=document.getElementById("app");
+function t(k){return T[C[L]][k]}
+function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
+function fm(s){return s.replace("{n}",esc(name))}
+function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),x=a[i];a[i]=a[j];a[j]=x}return a}
+function get(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function put(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function langBar(){return '<div class="langs">'+LN.map(function(n,i){return '<button class="lg'+(i==L?' on':'')+'" data-i="'+i+'">'+n+'</button>'}).join("")+'<button class="lg mu" id="mu" aria-label="sound">'+(mute?"🔇":"🔊")+'</button></div>'}
+function bindLang(f){app.querySelectorAll(".lg[data-i]").forEach(function(b){b.onclick=function(){L=+b.dataset.i;put("fy-lang",L);f()}});var m=document.getElementById("mu");if(m)m.onclick=function(){mute=!mute;put("fy-mute",mute?1:0);m.textContent=mute?"🔇":"🔊"}}
+function home(){
+app.innerHTML=langBar()+'<div class="card c"><h1>'+t("title")+'</h1><p class="q">'+t("ask")+'</p><input id="nm" maxlength="20" autocomplete="off" placeholder="'+t("ph")+'" value="'+esc(name)+'"><button class="next" id="go">'+t("go")+'</button></div>';
+bindLang(function(){name=document.getElementById("nm").value;home()});
+var go=function(){var v=document.getElementById("nm").value.trim();if(!v){document.getElementById("nm").focus();return}name=v;put("fy-name",v);levels()};
+document.getElementById("go").onclick=go;
+document.getElementById("nm").onkeydown=function(e){if(e.key==="Enter")go()}
+}
+var M={sub:0,tst:0,md:0,lv:0},mute=false,ac=null,POOL=D,RT=[0,100,300,700,1500,3000];
+function rk(x){var r=0;RT.forEach(function(v,i){if(x>=v)r=i});return r}
+function snd(k){if(mute)return;try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();var q={ok:[[660,0],[880,.09]],no:[[180,0],[140,.12]],end:[[523,0],[659,.12],[784,.24]],up:[[523,0],[659,.1],[784,.2],[1047,.3]]}[k];q.forEach(function(n){var o=ac.createOscillator(),g=ac.createGain(),s=ac.currentTime+n[1];o.type=k=="no"?"sawtooth":"sine";o.frequency.value=n[0];g.gain.setValueAtTime(.15,s);g.gain.exponentialRampToValueAtTime(.001,s+.18);o.connect(g);g.connect(ac.destination);o.start(s);o.stop(s+.2)})}catch(e){}}
+function chips(k,a){return '<div class="chips">'+a.map(function(n,i){return '<button class="ch'+(M[k]==i?' on':'')+'" data-k="'+k+'" data-i="'+i+'">'+n+'</button>'}).join("")+'</div>'}
+function levels(){
+var xp=+get("fy-xp")||0,r=rk(xp),nx=RT[r+1];
+app.innerHTML=langBar()+'<div class="card c"><h1>'+fm(t("hi"))+'</h1><p class="q">★ '+t("ranks")[r]+' · '+xp+(nx!=null?' / '+nx:'')+' XP</p><p class="q">'+t("sub")+'</p>'+chips("sub",t("subs"))+'<p class="q">'+t("tst")+'</p>'+chips("tst",t("tsts"))+'<p class="q">'+t("md")+'</p>'+chips("md",t("mds"))+'<p class="q">'+t("lvl")+'</p>'+chips("lv",t("lvs"))+'<button class="next" id="go">'+t("go")+'</button></div>';
+bindLang(levels);
+app.querySelectorAll(".ch").forEach(function(b){b.onclick=function(){M[b.dataset.k]=+b.dataset.i;put("fy-m",JSON.stringify(M));levels()}});
+document.getElementById("go").onclick=start
+}
+function start(){
+POOL=M.sub?D2:D;
+var a=POOL.filter(function(x){return x[0]===M.lv}),b=POOL.filter(function(x){return x[0]<=M.lv});
+S={i:0,score:0,lives:3,streak:0,n:0,t:60,end:0,base:M.md==0?a:b};
+S.deck=sh(S.base);
+if(M.md==2){S.lives=99;S.timer=setInterval(tick,1000)}
+ask()
+}
+function tick(){S.t--;var e=document.getElementById("tm"),bb=document.getElementById("bb");if(e)e.textContent=S.t;if(bb)bb.style.width=(S.t/60*100)+"%";if(S.t<=0)finish()}
+function nextQ(){S.i++;if(S.i>=S.deck.length){if(M.md==0)return finish();S.deck=sh(S.base);S.i=0}ask()}
+function others(x){return sh(POOL.filter(function(y){return y!==x})).slice(0,3)}
+function ask(){
+var x=S.deck[S.i],ty=["c","u","n"];if(x[4]>=0)ty.push("w");
+var k=ty[Math.floor(Math.random()*ty.length)],q,f,right,wr;
+if(M.tst==1){q=t("q2");f=x[5][L];right=x[1]+" "+x[2];wr=x[3].map(function(w){return x[1]+" "+w})}
+else if(k=="c"){q=t("qc")+": "+x[5][L];f=x[1]+" ?";right=x[2];wr=x[3]}
+else{f=x[1]+" "+x[2];
+if(k=="u"){q=t("qu");right=x[6][L];wr=others(x).map(function(y){return y[6][L]})}
+else if(k=="n"){q=t("qn");right=x[5][L];wr=others(x).map(function(y){return y[5][L]})}
+else{q=t("qw");right=NM[x[4]][L];wr=sh(NM.filter(function(_,i){return i!=x[4]})).slice(0,3).map(function(n){return n[L]})}}
+var l=M.md==0?t("q")+' <b>'+(S.i+1)+'/'+S.deck.length+'</b>':M.md==1?t("q")+' <b>'+(S.n+1)+'</b>':'⏱ <b id="tm">'+S.t+'</b>';
+var r=M.md==2?'🔥 <b>'+S.streak+'</b>':t("life")+' <b>'+"♥".repeat(S.lives)+'</b>';
+var w=M.md==0?S.i/S.deck.length*100:M.md==1?Math.min(S.streak,10)*10:S.t/60*100;
+app.innerHTML='<div class="top"><span>'+l+'</span><span>'+t("p")+' <b>'+S.score+'</b></span><span>'+r+'</span></div><div class="bar"><i id="bb" style="width:'+w+'%"></i></div><div class="card"><p class="q">'+q+'</p><p class="f">'+f+'</p><div class="opts" id="o"></div><div class="info" id="info"></div><button class="next" id="nx" style="display:none"></button></div>';
+var o=document.getElementById("o");
+sh([right].concat(wr)).forEach(function(v){var b=document.createElement("button");b.className="opt";b.textContent=v;b.onclick=function(){pick(b,v===right,right,x)};o.appendChild(b)})
+}
+function pick(b,ok,right,x){
+var s=S;
+document.querySelectorAll(".opt").forEach(function(e){e.disabled=true;if(e.textContent===right)e.classList.add("ok")});
+S.n++;
+if(ok){S.streak++;S.score+=10+Math.min(S.streak-1,5)*2;snd("ok")}else{b.classList.add("bad");S.streak=0;if(M.md!=2)S.lives--;snd("no")}
+if(M.md==2){setTimeout(function(){if(s===S&&!S.end)nextQ()},ok?450:900);return}
+var info=document.getElementById("info");info.style.display="block";
+info.innerHTML="<b>"+fm(ok?t("ok"):t("no"))+"</b><br>"+x[5][L]+"<br>"+esc(x[1]+" "+x[2])+"<br>"+(x[4]>=0?t("who")+NM[x[4]][L]+"<br>":"")+x[6][L];
+var last=S.lives<=0||(M.md==0&&S.i>=S.deck.length-1),nx=document.getElementById("nx");
+nx.style.display="block";nx.textContent=last?t("fin"):t("nx");
+nx.onclick=function(){if(last)finish();else nextQ()};nx.focus()
+}
+function finish(){
+if(S.end)return;S.end=1;if(S.timer)clearInterval(S.timer);
+var key="fy-best-"+M.sub+M.tst+M.md+M.lv,b=+get(key)||0,nb=S.score>b;if(nb)put(key,S.score);
+var x0=+get("fy-xp")||0,x1=x0+S.score;put("fy-xp",x1);
+var r1=rk(x1),up=r1>rk(x0);snd(up?"up":"end");
+app.innerHTML='<div class="card c"><h1>'+fm(S.lives>0?t("done"):t("over"))+'</h1><div class="big">'+S.score+'</div><p>'+(nb?t("rec"):t("best")+": "+b)+'</p><p>+'+S.score+' XP · ★ '+t("ranks")[r1]+'</p>'+(up?'<p><b>'+t("up")+t("ranks")[r1]+'</b></p>':'')+'<button class="next" id="again">'+t("again")+'</button><button class="next" id="menu" style="background:var(--card);color:var(--ink);border:1.5px solid var(--line)">'+t("menu")+'</button></div>';
+document.getElementById("again").onclick=start;
+document.getElementById("menu").onclick=levels
+}
+try{M=Object.assign(M,JSON.parse(get("fy-m")))}catch(e){}
+L=+get("fy-lang")||0;name=get("fy-name")||"";mute=get("fy-mute")=="1";home();
+</script>
+</body>
+</html>
